@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Instapay = () => {
   const navigate = useNavigate();
   const [user] = useState({ name: "Yousef Sheha" });
-  const [balance, setBalance] = useState(
-    localStorage.getItem("balance") || 5000
-  );
+  const [balance, setBalance] = useState(localStorage.getItem("balance") || 0);
   const [balanceIndex, setBalanceIndex] = useState(false);
   const amountInput = useRef();
   const [transaction, setTransaction] = useState(
@@ -18,7 +16,6 @@ const Instapay = () => {
     //    setBalanceIndex(!balanceIndex)
     balanceIndex ? setBalanceIndex(false) : setBalanceIndex(true);
   };
-
   const depositAmount = () => {
     let amount = +amountInput.current.value;
     let newBalance = balance + amount;
@@ -77,7 +74,7 @@ const Instapay = () => {
   }, [navigate]);
 
   return (
-    <div className="h-dvh w-full flex justify-center overflow-auto bg-gray-900 text-white">
+    <div className="h-dvh w-full flex justify-center bg-gray-900 text-white">
       <div className="container flex flex-col gap-3 p-4">
         <h1>Welcome , {user.name}</h1>
         <button onClick={handleLogout} className="btn btn-error">
@@ -119,37 +116,41 @@ const Instapay = () => {
                 there are no transactions yet
               </div>
             ) : (
-              <table className="table mt-5">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Before Balance</th>
-                    <th>Amount</th>
-                    <th>Type</th>
-                    <th>After Balance</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transaction.map((el, index) => {
-                    return (
-                      <tr
-                        key={index}
-                        className={
-                          el.type == "withdraw" ? "bg-red-500" : "bg-green-500"
-                        }
-                      >
-                        <td>{index + 1}</td>
-                        <td>{el.beforeBalance}</td>
-                        <td>{el.amount}</td>
-                        <td>{el.type}</td>
-                        <td>{el.afterBalance}</td>
-                        <td>{el.date}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <div className="overflow-x-auto w-full mt-5">
+                <table className="table w-full text-sm">
+                  <thead>
+                    <tr>
+                      <th className="p-1">#</th>
+                      <th className="p-1">Before Balance</th>
+                      <th className="p-1">Amount</th>
+                      <th className="p-1">Type</th>
+                      <th className="p-1">After Balance</th>
+                      <th className="p-1">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transaction.map((el, index) => {
+                      return (
+                        <tr
+                          key={index}
+                          className={
+                            el.type == "withdraw"
+                              ? "bg-red-500"
+                              : "bg-green-500"
+                          }
+                        >
+                          <td className="p-1">{index + 1}</td>
+                          <td className="p-1">{el.beforeBalance}</td>
+                          <td className="p-1">{el.amount}</td>
+                          <td className="p-1">{el.type}</td>
+                          <td className="p-1">{el.afterBalance}</td>
+                          <td className="p-1">{el.date}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             ))}
         </div>
       </div>
