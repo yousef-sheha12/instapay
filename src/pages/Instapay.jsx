@@ -95,7 +95,7 @@ const Instapay = () => {
             {balanceIndex ? "Hide Balance" : "Show Balance"}
           </button>
           {balanceIndex && (
-            <div className="w-full flex gap-4">
+            <div className="w-full flex gap-3">
               <input
                 ref={amountInput}
                 className="input"

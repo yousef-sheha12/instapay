@@ -31,11 +31,9 @@ const LoginPage = () => {
       } else {
         sessionStorage.setItem("hasLogged", true);
       }
-      // console.log(values);
     } else {
       toast.error("wrong userName or pass");
     }
-    // console.log(values);
   };
 
   const validationSchema = Yup.object({
@@ -63,7 +61,7 @@ const LoginPage = () => {
         onSubmit={handleSubmit}
       >
         <Form className="w-[400px] border shadow flex flex-col gap-4 justify-center bg-gray-800 p-4">
-          <h1>welcome back, please login</h1>
+          <h1 className="font-bold">welcome back, please login</h1>
           <Field
             //   ref={emailInput}
             name="userEmail"
