@@ -1,23 +1,10 @@
-// import React, { useRef } from "react";
-
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+
 const LoginPage = () => {
-  //   const emailInput = useRef();
-  //   const passInput = useRef();
-
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     let data = {
-  //       email: emailInput.current.value,
-  //       pass: passInput.current.value,
-  //     };
-  //     console.log(data);
-  //   };
-
   const navigate = useNavigate();
 
   const handleSubmit = (values) => {
@@ -50,7 +37,7 @@ const LoginPage = () => {
   }, [navigate]);
 
   return (
-    <div className="w-full h-dvh overflow-auto flex justify-center items-center">
+    <div className="w-full min-h-screen flex justify-center items-center bg-gray-900 p-4">
       <Formik
         validationSchema={validationSchema}
         initialValues={{
@@ -60,33 +47,33 @@ const LoginPage = () => {
         }}
         onSubmit={handleSubmit}
       >
-        <Form className="w-[400px] border shadow flex flex-col gap-4 justify-center bg-gray-800 p-4">
-          <h1 className="font-bold">welcome back, please login</h1>
+        <Form className="w-full max-w-md border rounded-lg shadow-lg flex flex-col gap-6 justify-center bg-gray-800 p-6">
+          <h1 className="text-2xl font-bold text-center text-white">
+            Welcome back, please login
+          </h1>
           <Field
-            //   ref={emailInput}
             name="userEmail"
-            className="input w-full"
+            className="input input-bordered w-full"
             type="text"
             placeholder="Enter your email"
           />
           <ErrorMessage
             name="userEmail"
-            className="text-red-500"
+            className="text-red-500 text-sm"
             component={"p"}
           />
           <Field
-            // ref={passInput}
             name="userPass"
-            className="input w-full"
-            type="number"
-            placeholder="Enter your pass"
+            className="input input-bordered w-full"
+            type="password"
+            placeholder="Enter your password"
           />
           <ErrorMessage
             name="userPass"
-            className="text-red-500"
+            className="text-red-500 text-sm"
             component={"p"}
           />
-          <label className="flex gap-2">
+          <label className="flex items-center gap-2 text-white">
             <Field
               name="rememberIndex"
               className="checkbox checkbox-primary"
@@ -99,8 +86,6 @@ const LoginPage = () => {
           </button>
         </Form>
       </Formik>
-
-      {/* <form></form> */}
     </div>
   );
 };

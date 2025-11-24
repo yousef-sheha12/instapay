@@ -13,7 +13,6 @@ const Instapay = () => {
   const [transactionIndex, showTransactionIndex] = useState(false);
 
   const toggle = () => {
-    //    setBalanceIndex(!balanceIndex)
     balanceIndex ? setBalanceIndex(false) : setBalanceIndex(true);
   };
   const depositAmount = () => {
@@ -27,7 +26,7 @@ const Instapay = () => {
       type: "deposit",
       date: time,
     };
-    let copy = [...transaction, newTransaction]; // = copy.push(newTransaction)
+    let copy = [...transaction, newTransaction];
     localStorage.setItem("balance", newBalance);
     localStorage.setItem("transaction", JSON.stringify(copy));
     setTransaction(copy);
@@ -48,7 +47,7 @@ const Instapay = () => {
         type: "withdraw",
         date: time,
       };
-      let copy = [...transaction, newTransaction]; // = copy.push(newTransaction)
+      let copy = [...transaction, newTransaction];
       localStorage.setItem("balance", newBalance);
       localStorage.setItem("transaction", JSON.stringify(copy));
       setTransaction(copy);
@@ -74,85 +73,109 @@ const Instapay = () => {
   }, [navigate]);
 
   return (
-    <div className="h-dvh w-full flex justify-center bg-gray-900 text-white">
-      <div className="container flex flex-col gap-3 p-4">
-        <h1>Welcome , {user.name}</h1>
-        <button onClick={handleLogout} className="btn btn-error">
-          Log Out
-        </button>
-        <p>balance : {balanceIndex ? balance : "****"}</p>
-        <div className="flex flex-wrap items-center gap-3">
+    <div className="min-h-screen w-full bg-gray-900 text-white flex justify-center py-8 px-4">
+      <div className="max-w-4xl w-full flex flex-col gap-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl md:font-extrabold">Welcome, {user.name}</h1>
+          <button
+            onClick={handleLogout}
+            className="btn btn-error hover:bg-red-500 transition"
+          >
+            Log Out
+          </button>
+        </div>
+
+        <div className="text-xl font-semibold">
+          Balance:
+          <span className="ml-2 text-green-400">
+            {balanceIndex ? balance : "****"}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
           <button
             className="btn btn-neutral"
             onClick={() => showTransactionIndex(true)}
           >
-            show transactions
+            Show Transactions
           </button>
           <button
-            className={!balanceIndex ? "btn btn-primary" : "btn btn-warning"}
+            className={
+              !balanceIndex ? "btn btn-primary" : "btn btn-warning"
+            }
             onClick={toggle}
           >
             {balanceIndex ? "Hide Balance" : "Show Balance"}
           </button>
           {balanceIndex && (
-            <div className="w-full flex gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full max-w-md">
               <input
                 ref={amountInput}
-                className="input"
+                className="input w-full sm:w-auto"
                 placeholder="Enter Amount"
+                type="number"
+                min="0"
               />
-              <button className="btn btn-error" onClick={depositAmount}>
-                deposit
+              <button
+                className="btn btn-success mt-2 sm:mt-0"
+                onClick={depositAmount}
+              >
+                Deposit
               </button>
-              <button className="btn btn-success" onClick={withdrawAmount}>
-                withdraw
+              <button
+                className="btn btn-error mt-2 sm:mt-0"
+                onClick={withdrawAmount}
+              >
+                Withdraw
               </button>
             </div>
           )}
+        </div>
 
-          {transactionIndex &&
-            (transaction.length == 0 ? (
-              <div className="w-full text-center text-red-500 text-2xl">
-                there are no transactions yet
+        {transactionIndex && (
+          <section>
+            <h2 className="text-2xl font-bold mb-4">Transactions</h2>
+            {transaction.length === 0 ? (
+              <div className="w-full text-center text-red-500 text-xl font-semibold">
+                There are no transactions yet.
               </div>
             ) : (
-              <div className="overflow-x-auto w-full mt-5">
+              <div className="overflow-x-auto w-full">
                 <table className="table w-full text-sm">
                   <thead>
                     <tr>
-                      <th className="p-1">#</th>
-                      <th className="p-1">Before Balance</th>
-                      <th className="p-1">Amount</th>
-                      <th className="p-1">Type</th>
-                      <th className="p-1">After Balance</th>
-                      <th className="p-1">Date</th>
+                      <th className="p-2">#</th>
+                      <th className="p-2">Before Balance</th>
+                      <th className="p-2">Amount</th>
+                      <th className="p-2">Type</th>
+                      <th className="p-2">After Balance</th>
+                      <th className="p-2">Date</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {transaction.map((el, index) => {
-                      return (
-                        <tr
-                          key={index}
-                          className={
-                            el.type == "withdraw"
-                              ? "bg-red-500"
-                              : "bg-green-500"
-                          }
-                        >
-                          <td className="p-1">{index + 1}</td>
-                          <td className="p-1">{el.beforeBalance}</td>
-                          <td className="p-1">{el.amount}</td>
-                          <td className="p-1">{el.type}</td>
-                          <td className="p-1">{el.afterBalance}</td>
-                          <td className="p-1">{el.date}</td>
-                        </tr>
-                      );
-                    })}
+                    {transaction.map((el, index) => (
+                      <tr
+                        key={index}
+                        className={
+                          el.type === "withdraw"
+                            ? "bg-red-600 text-white"
+                            : "bg-green-600 text-white"
+                        }
+                      >
+                        <td className="p-2">{index + 1}</td>
+                        <td className="p-2">{el.beforeBalance}</td>
+                        <td className="p-2">{el.amount}</td>
+                        <td className="p-2 capitalize">{el.type}</td>
+                        <td className="p-2">{el.afterBalance}</td>
+                        <td className="p-2">{el.date}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
-            ))}
-        </div>
+            )}
+          </section>
+        )}
       </div>
     </div>
   );
